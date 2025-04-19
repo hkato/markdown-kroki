@@ -1,11 +1,7 @@
 """Markdown Mermaid Extension"""
 
 import base64
-import os
 import re
-import shutil
-import subprocess
-import tempfile
 from typing import Generator, List
 
 import requests
@@ -13,10 +9,10 @@ from markdown import Extension
 from markdown.preprocessors import Preprocessor
 
 
-class MermaidProcessor(Preprocessor):
+class KrokiDiagramProcessor(Preprocessor):
     """Preprocessor to convert diagram code blocks to SVG/PNG image Data URIs."""
 
-    DIAGRAM_BLOCK_START_RE = re.compile(r'^\s*```(?P<lang>mermaid)(?:\s+(?P<options>.+))?')
+    DIAGRAM_BLOCK_START_RE = re.compile(r'^\s*```(?P<language>\w+)(?:\s+(?P<options>.+))?')
     DIAGRAM_BLOCK_END_RE = re.compile(r'^\s*```')
 
     KROKI_URL = 'https://kroki.io'
@@ -29,7 +25,6 @@ class MermaidProcessor(Preprocessor):
     def __init__(self, md, config):
         super().__init__(md)
         self.kroki_url = config.get('kroki_url', self.KROKI_URL)
-        self.mermaid_cli = config.get('mermaid_cli', False)
 
     def run(self, lines: List[str]) -> List[str]:
         return list(self._parse_diagram_block(lines))
@@ -58,10 +53,12 @@ class MermaidProcessor(Preprocessor):
         """Convert diagram code block to HTML"""
         diagram_code = ''
         html_string = ''
+        # lang = ''
 
         for line in lines:
             diagram_match = re.search(self.DIAGRAM_BLOCK_START_RE, line)
             if diagram_match:
+                language = diagram_match.group('language')
                 options = diagram_match.group('options')
                 option_dict = {}
                 if options:
@@ -79,7 +76,7 @@ class MermaidProcessor(Preprocessor):
                 else:
                     image_type = 'svg'
 
-                base64image = self._get_base64image(diagram_code, image_type)
+                base64image = self._get_base64image(diagram_code, language, image_type)
                 if base64image:
                     # Build the <img> tag with extracted options
                     img_tag = f'<img src="data:{self.MIME_TYPES[image_type]};base64,{base64image}"'
@@ -94,16 +91,9 @@ class MermaidProcessor(Preprocessor):
 
         return html_string
 
-    def _get_base64image(self, diagram_code: str, image_type: str) -> str:
-        """Convert mermaid code to SVG/PNG."""
-        if not self.mermaid_cli:
-            return self._get_base64image_kroki(diagram_code, image_type)
-        else:
-            return self._get_base64image_mmdc(diagram_code, image_type)
-
-    def _get_base64image_kroki(self, diagram_code: str, image_type: str) -> str:
-        """Convert mermaid code to SVG/PNG using Kroki."""
-        kroki_url = f'{self.kroki_url}/mermaid/{image_type}'
+    def _get_base64image(self, diagram_code: str, language: str, image_type: str) -> str:
+        """Convert diagram code to SVG/PNG using Kroki."""
+        kroki_url = f'{self.kroki_url}/{language}/{image_type}'
         headers = {'Content-Type': 'text/plain'}
         response = requests.post(kroki_url, headers=headers, data=diagram_code, timeout=30)
         if response.status_code == 200:
@@ -117,60 +107,13 @@ class MermaidProcessor(Preprocessor):
                 return base64image
         return ''
 
-    def _get_base64image_mmdc(self, diagram_code: str, image_type: str) -> str:
-        """Convert mermaid code to SVG/PNG using mmdc (Mermaid CLI)."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.mmd', delete=False) as tmp_mmd:
-            tmp_mmd.write(diagram_code)
-            mmd_filepath = tmp_mmd.name
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix=f'.{image_type}', delete=False) as tmp_img:
-            img_filepath = tmp_img.name
-
-        mmdc_path = os.path.join(os.getcwd(), 'node_modules/.bin/mmdc')
-        if not shutil.which(mmdc_path):
-            mmdc_path = 'mmdc'
-
-        try:
-            command = [
-                mmdc_path,
-                '--input',
-                mmd_filepath,
-                '--output',
-                img_filepath,
-                '--outputFormat',
-                image_type,
-                '--puppeteerConfigFile',
-                os.path.join(os.path.dirname(__file__), 'puppeteer-config.json'),
-            ]
-            subprocess.run(command, check=True, capture_output=True)
-            if image_type == 'svg':
-                with open(img_filepath, 'r', encoding='utf-8') as f:
-                    svg_content: str = f.read()
-            elif image_type == 'png':
-                with open(img_filepath, 'rb') as f:
-                    png_content: bytes = f.read()
-        except subprocess.CalledProcessError as e:
-            print(f'Error generating SVG: {e.stderr.decode()}')
-            return ''
-        finally:
-            os.remove(mmd_filepath)
-            os.remove(img_filepath)
-
-        if image_type == 'svg':
-            base64image = base64.b64encode(svg_content.encode('utf-8')).decode('utf-8')
-        else:
-            base64image = base64.b64encode(png_content).decode('utf-8')
-
-        return base64image
-
-
-class MermaidExtension(Extension):
-    """Markdown Extension to support Mermaid diagrams."""
+class KrokiDiagramExtension(Extension):
+    """Markdown Extension to support diagrams using Kroki."""
 
     def __init__(self, **kwargs):
         self.config = {
             'kroki_url': ['https://kroki.io', 'Base URL for the Kroki server.'],
-            'mermaid_cli': [False, 'Use mmdc (Mermaid CLI) instead of Kroki server.'],
         }
         super().__init__(**kwargs)
         self.extension_configs = kwargs
@@ -178,11 +121,11 @@ class MermaidExtension(Extension):
     def extendMarkdown(self, md):
         config = self.getConfigs()
         final_config = {**config, **self.extension_configs}
-        mermaid_preprocessor = MermaidProcessor(md, final_config)
-        md.preprocessors.register(mermaid_preprocessor, 'markdown_mermaid_data_udi', 50)
+        kroki_diagram_preprocessor = KrokiDiagramProcessor(md, final_config)
+        md.preprocessors.register(kroki_diagram_preprocessor, 'markdown_kroki', 50)
 
 
 # pylint: disable=C0103
 def makeExtension(**kwargs):
-    """Create an instance of the MermaidExtension."""
-    return MermaidExtension(**kwargs)
+    """Create an instance of the KrokiDiagramExtension."""
+    return KrokiDiagramExtension(**kwargs)

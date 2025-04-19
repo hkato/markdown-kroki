@@ -1,5 +1,5 @@
 """Markdown Mermaid Data URI extension."""
 
-from .extension import MermaidExtension, makeExtension
+from .extension import KrokiDiagramExtension, makeExtension
 
-__all__ = ['MermaidExtension', 'makeExtension']
+__all__ = ['KrokiDiagramExtension', 'makeExtension']
