@@ -19,19 +19,23 @@ pip install git+https://github.com/hkato/markdown-kroki.git
 
 ## Requirements
 
-### Access the Kroki server via the Internet
+### Internet access to the public Kroki server
 
 Default setting with no options.
 
 ### Self-Managed Kroki server (recommended)
 
-ref. Kroki.io > [Install](https://kroki.io/#install)
+Here is a sample Docker Compose file.
 
-Here's a sample compose file.
+ref. Kroki.io > [Install](https://kroki.io/#install) > [Using Docker or Podman](https://docs.kroki.io/kroki/setup/use-docker-or-podman/)
 
 ```sh
 docker compose up -d
 ```
+
+!!! note
+    The default port used by MkDocs (`mkdocs serve`) may conflict with the default port of a Dockerized Kroki instance.
+    Consequently, you will need to change the port configuration for one of them.
 
 ## Usage
 
@@ -48,7 +52,8 @@ Bob --> Alice: Authentication Response
 @enduml
 ```"""
 
-html_output = markdown.markdown(markdown_text, extensions=[KrokiDiagramExtension(kroki_url='https://kroki.io')])
+html_output = markdown.markdown(markdown_text, extensions=[
+                                KrokiDiagramExtension(kroki_url='https://kroki.io')])
 
 print(html_output)
 ````
@@ -69,7 +74,7 @@ IHgxPSIyNzYiLz48L3N2Zz4=" ></p>
 # mkdocs.yml
 markdown_extensions:
   - markdown_kroki:
-      kroki_url: http://localhost:18000/  # default https://kroki.io/
+      kroki_url: http://localhost:18000  # default: https://kroki.io
 ```
 
 ## Process flow

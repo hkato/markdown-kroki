@@ -1,11 +1,13 @@
 site_name: Diagram extension for Python-Markdown
 site_author: Hideyuki KATO
-repo_url: https://github.com/hkato/markdown-mermaid-data-uri
+repo_url: https://github.com/hkato/markdown-kroki
 repo_name: hkato/markdown-kroki
 copyright: Copyright © 2025 Hideyuki KATO
 
 theme:
   name: material
+  palette:
+    primary: black
   features:
     - navigation.tabs
   font:
