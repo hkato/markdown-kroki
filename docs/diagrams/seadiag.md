@@ -1,0 +1,12 @@
+# SeaDiag
+
+!!! bug
+
+```seqdiag
+seqdiag {
+  browser  -> webserver [label = "GET /seqdiag/svg/base64"];
+  webserver  -> processor [label = "Convert text to image"];
+  webserver <-- processor;
+  browser <-- webserver;
+}
+```
