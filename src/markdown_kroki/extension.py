@@ -1,4 +1,4 @@
-"""Markdown Mermaid Extension"""
+"""Diagram extension for Python-Markdown using Kroki"""
 
 import base64
 import re
@@ -83,7 +83,6 @@ class KrokiDiagramProcessor(Preprocessor):
         """Convert diagram code block to HTML"""
         diagram_code = ''
         html_string = ''
-        # lang = ''
 
         for line in lines:
             diagram_match = re.search(self.DIAGRAM_BLOCK_START_RE, line)
