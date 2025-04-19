@@ -1,7 +1,7 @@
 [project]
-name = "markdown-mermaid-data-uri"
+name = "markdown-kroki"
 version = "0.1.0"
-description = "Convert Mermaid diagrams to data URIs for Markdown."
+description = "Convert various diagrams to data URIs for Markdown."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
