@@ -19,10 +19,12 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - markdown_kroki:
+      kroki_url: https://kroki.io
       # kroki_url: http://localhost:18000
 
 plugins:
   - search
   - to-pdf:
+      cover_title: Diagram extension for Python-Markdown
       cover_subtitle: using Kroki
       download_link: header
