@@ -1,4 +1,4 @@
-site_name: Diagram extension for Python-Markdown
+site_name: Diagram extension for Python-Markdown using Kroki
 site_author: Hideyuki KATO
 repo_url: https://github.com/hkato/markdown-kroki
 repo_name: hkato/markdown-kroki
