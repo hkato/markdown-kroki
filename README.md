@@ -1,23 +1,23 @@
-# markdown-mermaid-data-uri
+# markdown-kroki
 
-[Mermaid][mermaid] extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki] or [Mermaid-CLI][mermaid-cli].
+Diagram extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki].
 
-Mermaid code blocks are converted to SVG/PNG and treated as [data: URI][data-uri]. This allows for PDF generation with tools like [WeasyPrint][wasyprint] without the need for JavaScript, even during web browsing.
+This extension converts various diagram code blocks into SVG or PNG [data: URI][data-uri].
+This enables PDF generation with tools like [WeasyPrint][wasyprint] without requiring JavaScript, even during web browsing.
 
 [mermaid]: https://mermaid.js.org/
 [python-markdown]: https://python-markdown.github.io/
 [kuroki]: https://kroki.io/
-[mermaid-cli]: https://github.com/mermaid-js/mermaid-cli
 [data-uri]: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
 [wasyprint]: https://weasyprint.org/
 
 ## Install
 
 ```sh
-pip install git+https://github.com/hkato/markdown-mermaid-data-uri.git
+pip install git+https://github.com/hkato/markdown-kroki.git
 ```
 
-## Requirements (Mermaid engine)
+## Requirements
 
 ### Access the Kroki server via the Internet
 
@@ -33,29 +33,22 @@ Here's a sample compose file.
 docker compose up -d
 ```
 
-### Mermaid CLI (recommended)
-
-```sh
-npm install @mermaid-js/mermaid-cli
-```
-
 ## Usage
+
+### Python code
 
 ````python
 import markdown
-from markdown_mermaid_data_uri import MermaidDataURIExtension
+from markdown_kroki import KrokiDiagramExtension
 
-markdown_text = """```mermaid
-sequenceDiagram
-    participant Alice
-    participant Bob
-    Bob->>Alice: Hi Alice
-    Alice->>Bob: Hi Bob
+markdown_text = """```plantuml image=svg width=300
+@startuml
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+@enduml
 ```"""
 
-html_output = markdown.markdown(
-    markdown_text, extensions=[MermaidDataURIExtension(kroki_url='https://kroki.io', mermaid_cli=False)]
-)
+html_output = markdown.markdown(markdown_text, extensions=[KrokiDiagramExtension(kroki_url='https://kroki.io')])
 
 print(html_output)
 ````
@@ -70,44 +63,27 @@ Gg6IDc1MHB4OyBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTsiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3L
 IHgxPSIyNzYiLz48L3N2Zz4=" ></p>
 ```
 
-## MkDocs Integration
+### MkDocs Integration
 
 ```yaml
 # mkdocs.yml
 markdown_extensions:
-  - markdown_mermaid_data_uri
+  - markdown_kroki:
+      kroki_url: http://localhost:18000/  # default https://kroki.io/
 ```
 
-### Kroki server
-
-```yaml
-# mkdocs.yml
-markdown_extensions:
-  - markdown_mermaid_data_uri:
-      kroki_url: http://localhost:18080/
-```
-
-### Mermaid CLI
-
-```yaml
-# mkdocs.yml
-markdown_extensions:
-  - markdown_mermaid_data_uri:
-      mermaid_cli: true
-```
-
-## Diagram
+## Process flow
 
 ```mermaid
 sequenceDiagram
     participant application as Application<br/>(eg MkDocs)
     participant markdown as Python Markdown
-    participant extension as MermaidDataURIExtension
-    participant engine as Kroki Server / Mermaid CLI
+    participant extension as KrokiDiagramExtension
+    participant engine as Kroki Server
 
-    application->>markdown: Markdown + Mermaid
+    application->>markdown: Markdown + Diagrams
     markdown->>extension: Preprocessor
-    extension->>engine: Mermaid
+    extension->>engine: Diagram code 
     engine-->>engine: Convert
     engine-->>extension: Image Data
     extension-->>extension: Base64 encode
