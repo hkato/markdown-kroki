@@ -10,6 +10,7 @@ theme:
     primary: black
   features:
     - navigation.tabs
+    - navigation.footer
   font:
     text: Roboto
     code: Roboto Mono
