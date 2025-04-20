@@ -22,8 +22,8 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - markdown_kroki:
-      kroki_url: https://kroki.io
-      # kroki_url: http://localhost:18000
+      # kroki_url: https://kroki.io
+      kroki_url: http://localhost:18000
 
 plugins:
   - search
