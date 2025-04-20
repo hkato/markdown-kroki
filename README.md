@@ -1,14 +1,15 @@
-# markdown-kroki
+# [markdown-kroki](https://hkato.github.io/markdown-kroki/)
 
 Diagram extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki].
 
-This extension converts various diagram code blocks into SVG or PNG [data: URI][data-uri].
-This enables PDF generation with tools like [WeasyPrint][wasyprint] without requiring JavaScript, even during web browsing.
+This extension converts various diagram code blocks into Base64 encoded [data: URI][data-uri].
+This enables PDF generation with tools like [MkDocs to PDF][mkdocs-to-pdf]/[WeasyPrint][wasyprint] without requiring JavaScript, even during web browsing.
 
 [mermaid]: https://mermaid.js.org/
 [python-markdown]: https://python-markdown.github.io/
 [kuroki]: https://kroki.io/
 [data-uri]: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
+[mkdocs-to-pdf]: https://mkdocs-to-pdf.readthedocs.io/
 [wasyprint]: https://weasyprint.org/
 
 ## Install
@@ -39,6 +40,15 @@ docker compose up -d
 
 ## Usage
 
+### MkDocs Integration
+
+```yaml
+# mkdocs.yml
+markdown_extensions:
+  - markdown_kroki:
+      kroki_url: http://localhost:18000  # default: https://kroki.io
+```
+
 ### Python code
 
 ````python
@@ -66,15 +76,6 @@ Gg6IDc1MHB4OyBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTsiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3L
 ...
 ...
 IHgxPSIyNzYiLz48L3N2Zz4=" ></p>
-```
-
-### MkDocs Integration
-
-```yaml
-# mkdocs.yml
-markdown_extensions:
-  - markdown_kroki:
-      kroki_url: http://localhost:18000  # default: https://kroki.io
 ```
 
 ## Process flow

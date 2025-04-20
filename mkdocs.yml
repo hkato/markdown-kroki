@@ -8,6 +8,8 @@ theme:
   name: material
   palette:
     primary: black
+  icon:
+    logo: fontawesome/solid/chart-diagram
   features:
     - navigation.tabs
     - navigation.footer
