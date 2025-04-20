@@ -1,7 +1,5 @@
 # WireViz
 
-!!! bug
-
 ```wireviz
 connectors:
   X1:

@@ -1,6 +1,4 @@
-# SeaDiag
-
-!!! bug
+# SeqDiag
 
 ```seqdiag
 seqdiag {
