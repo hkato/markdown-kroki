@@ -15,7 +15,7 @@ This enables PDF generation with tools like [MkDocs to PDF][mkdocs-to-pdf]/[Weas
 ## Install
 
 ```sh
-pip install git+https://github.com/hkato/markdown-kroki.git
+pip install markdown-kroki
 ```
 
 ## Requirements
