@@ -12,7 +12,7 @@ from markdown.preprocessors import Preprocessor
 class KrokiDiagramProcessor(Preprocessor):
     """Preprocessor to convert diagram code blocks to SVG/PNG image Data URIs."""
 
-    DIAGRAMS = '|'.join(
+    DIAGRAM_LIST = '|'.join(
         [
             'actdiag',
             'blockdiag',
@@ -40,9 +40,10 @@ class KrokiDiagramProcessor(Preprocessor):
             'vega',
             'wavedrom',
             'wireviz',
+            'plantuml',  # FIXME: temporary fix...
         ]
     )
-    DIAGRAM_BLOCK_START_RE = re.compile(r'^\s*```(?P<language>' + DIAGRAMS + r'\w+)(?:\s+(?P<options>.+))?')
+    DIAGRAM_BLOCK_START_RE = re.compile(r'^\s*```(?P<language>' + DIAGRAM_LIST + r'\w+)(?:\s+(?P<options>.+))?')
     DIAGRAM_BLOCK_END_RE = re.compile(r'^\s*```')
 
     KROKI_URL = 'https://kroki.io'
