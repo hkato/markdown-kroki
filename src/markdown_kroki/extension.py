@@ -98,18 +98,18 @@ class KrokiDiagramProcessor(Preprocessor):
                 continue
 
             elif re.search(self.DIAGRAM_BLOCK_END_RE, line):
-                if 'image' in option_dict:
-                    image_type = option_dict['image']
-                    del option_dict['image']
-                    if image_type not in ['svg', 'png']:
-                        image_type = 'svg'
+                if 'format' in option_dict:
+                    format = option_dict['format'].strip('"')
+                    del option_dict['format']
+                    if format not in ['svg', 'png']:
+                        format = 'svg'
                 else:
-                    image_type = 'svg'
+                    format = 'svg'
 
-                base64image = self._get_base64image(diagram_code, language, image_type)
+                base64image = self._get_base64image(diagram_code, language, format)
                 if base64image:
                     # Build the <img> tag with extracted options
-                    img_tag = f'<img src="data:{self.MIME_TYPES[image_type]};base64,{base64image}"'
+                    img_tag = f'<img src="data:{self.MIME_TYPES[format]};base64,{base64image}"'
                     for key, value in option_dict.items():
                         img_tag += f' {key}={value}'
                     img_tag += ' />'
@@ -121,17 +121,17 @@ class KrokiDiagramProcessor(Preprocessor):
 
         return html_string
 
-    def _get_base64image(self, diagram_code: str, language: str, image_type: str) -> str:
+    def _get_base64image(self, diagram_code: str, language: str, format: str) -> str:
         """Convert diagram code to SVG/PNG using Kroki."""
-        kroki_url = f'{self.kroki_url}/{language}/{image_type}'
+        kroki_url = f'{self.kroki_url}/{language}/{format}'
         headers = {'Content-Type': 'text/plain'}
         response = requests.post(kroki_url, headers=headers, data=diagram_code, timeout=30)
         if response.status_code == 200:
-            if image_type == 'svg':
+            if format == 'svg':
                 body = response.content.decode('utf-8')
                 base64image = base64.b64encode(body.encode('utf-8')).decode('utf-8')
                 return base64image
-            if image_type == 'png':
+            if format == 'png':
                 body = response.content
                 base64image = base64.b64encode(body).decode('utf-8')
                 return base64image

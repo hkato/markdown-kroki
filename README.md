@@ -55,7 +55,7 @@ markdown_extensions:
 import markdown
 from markdown_kroki import KrokiDiagramExtension
 
-markdown_text = """```plantuml image=svg width=300
+markdown_text = """```plantuml format="svg" width="300"
 @startuml
 Alice -> Bob: Authentication Request
 Bob --> Alice: Authentication Response
