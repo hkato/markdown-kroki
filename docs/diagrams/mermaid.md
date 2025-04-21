@@ -16,7 +16,7 @@ sequenceDiagram
     However, it does appear when using Playwright/Chromium.
     As a countermeasure for WeasyPrint limitations, use PNG images.
 
-```mermaid image=png height=400
+```mermaid format="png" height="400"
 graph TD
   A[ Anyone ] -->|Can help | B( Go to github.com/yuzutech/kroki )
   B --> C{ How to contribute? }
