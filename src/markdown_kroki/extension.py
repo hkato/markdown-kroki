@@ -52,6 +52,15 @@ class KrokiDiagramProcessor(Preprocessor):
         'svg': 'image/svg+xml',
         'png': 'image/png',
     }
+    IMG_TAG_ATTRIBUTES = [
+        'alt',
+        'width',
+        'height',
+        'class',
+        'id',
+        'style',
+        'title',
+    ]
 
     def __init__(self, md, config):
         super().__init__(md)
@@ -90,27 +99,37 @@ class KrokiDiagramProcessor(Preprocessor):
             if diagram_match:
                 language = diagram_match.group('language')
                 options = diagram_match.group('options')
-                option_dict = {}
+                code_block_options = {}
                 if options:
                     for option in options.split():
                         key, _, value = option.partition('=')
-                        option_dict[key] = value
+                        code_block_options[key] = value
                 continue
 
             elif re.search(self.DIAGRAM_BLOCK_END_RE, line):
-                if 'format' in option_dict:
-                    format = option_dict['format'].strip('"')
-                    del option_dict['format']
+                # Image format
+                if 'format' in code_block_options:
+                    format = code_block_options['format'].strip('"')
+                    del code_block_options['format']
                     if format not in ['svg', 'png']:
                         format = 'svg'
                 else:
                     format = 'svg'
 
+                # img tag attributes and Kroki options
+                img_tag_attributes = {}
+                kroki_options = {}
+                for option in code_block_options:
+                    if option in self.IMG_TAG_ATTRIBUTES:
+                        img_tag_attributes[option] = code_block_options[option]
+                    else:
+                        kroki_options[option] = code_block_options[option].strip('"')
+
                 base64image = self._get_base64image(diagram_code, language, format)
                 if base64image:
                     # Build the <img> tag with extracted options
                     img_tag = f'<img src="data:{self.MIME_TYPES[format]};base64,{base64image}"'
-                    for key, value in option_dict.items():
+                    for key, value in img_tag_attributes.items():
                         img_tag += f' {key}={value}'
                     img_tag += ' />'
                     html_string = img_tag
