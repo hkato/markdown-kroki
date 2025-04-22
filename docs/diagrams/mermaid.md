@@ -1,7 +1,16 @@
 # Mermaid
 
-
 ```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Bob->>Alice: Hi Alice
+    Alice->>Bob: Hi Bob
+```
+
+## with options
+
+```mermaid theme="forest"
 sequenceDiagram
     participant Alice
     participant Bob
