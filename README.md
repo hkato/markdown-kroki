@@ -84,19 +84,4 @@ IHgxPSIyNzYiLz48L3N2Zz4=" width="300" ></p>
 
 ## Process flow
 
-```mermaid
-sequenceDiagram
-    participant application as Application<br/>(eg MkDocs)
-    participant markdown as Python Markdown
-    participant extension as KrokiDiagramExtension
-    participant engine as Kroki Server
-
-    application->>markdown: Markdown + Diagrams
-    markdown->>extension: Preprocessor
-    extension->>engine: Diagram code 
-    engine-->>engine: Convert
-    engine-->>extension: Image Data
-    extension-->>extension: Base64 encode
-    extension-->>markdown: Markdown + data URI image
-    markdown-->>application: HTML + data URI image
-```
+![Process flow](process_flow_diagram.svg)
