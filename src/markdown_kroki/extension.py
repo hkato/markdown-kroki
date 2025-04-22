@@ -123,9 +123,10 @@ class KrokiDiagramProcessor(Preprocessor):
                     if option in self.IMG_TAG_ATTRIBUTES:
                         img_tag_attributes[option] = code_block_options[option]
                     else:
-                        kroki_options[option] = code_block_options[option].strip('"')
+                        key = self._convert_mermaid_options_key(option)
+                        kroki_options[key] = code_block_options[option].strip('"')
 
-                base64image = self._get_base64image(diagram_code, language, format)
+                base64image = self._get_base64image(diagram_code, language, format, kroki_options)
                 if base64image:
                     # Build the <img> tag with extracted options
                     img_tag = f'<img src="data:{self.MIME_TYPES[format]};base64,{base64image}"'
@@ -140,10 +141,21 @@ class KrokiDiagramProcessor(Preprocessor):
 
         return html_string
 
-    def _get_base64image(self, diagram_code: str, language: str, format: str) -> str:
+    def _convert_mermaid_options_key(self, key: str) -> str:
+        """Convert Mermaid options key to Kroki options key."""
+        # https://docs.kroki.io/kroki/setup/diagram-options/#_mermaid
+        key = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', key)
+        key = re.sub('([a-z0-9])([A-Z])', r'\1-\2', key)
+        key = key.replace('.', '_').lower()
+        return key
+
+    def _get_base64image(self, diagram_code: str, language: str, format: str, kroki_options: dict) -> str:
         """Convert diagram code to SVG/PNG using Kroki."""
         kroki_url = f'{self.kroki_url}/{language}/{format}'
         headers = {'Content-Type': 'text/plain'}
+        for key, value in kroki_options.items():
+            headers[f'Kroki-Diagram-Options-{key}'] = value
+
         response = requests.post(kroki_url, headers=headers, data=diagram_code, timeout=30)
         if response.status_code == 200:
             if format == 'svg':
