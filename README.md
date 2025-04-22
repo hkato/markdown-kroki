@@ -34,11 +34,15 @@ ref. Kroki.io > [Install](https://kroki.io/#install) > [Using Docker or Podman](
 docker compose up -d
 ```
 
-!!! note
-    The default port used by MkDocs (`mkdocs serve`) may conflict with the default port of a Dockerized Kroki instance.
-    Consequently, you will need to change the port configuration for one of them.
+> The default port used by MkDocs (`mkdocs serve`) may conflict with the default port of a Dockerized Kroki instance.
+> Consequently, you will need to change the port configuration for one of them.
 
 ## Usage
+
+````md
+```{diagram language} formant=[svg|png] {img tag attribute}="value" {diagram option}="value"
+```
+````
 
 ### MkDocs Integration
 
@@ -55,7 +59,7 @@ markdown_extensions:
 import markdown
 from markdown_kroki import KrokiDiagramExtension
 
-markdown_text = """```plantuml format="svg" width="300"
+markdown_text = """```plantuml format="svg" theme="sketchy-outline" width="300"
 @startuml
 Alice -> Bob: Authentication Request
 Bob --> Alice: Authentication Response
@@ -75,7 +79,7 @@ Gg6IDc1MHB4OyBiYWNrZ3JvdW5kLWNvbG9yOiB3aGl0ZTsiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3L
 ...
 ...
 ...
-IHgxPSIyNzYiLz48L3N2Zz4=" ></p>
+IHgxPSIyNzYiLz48L3N2Zz4=" width="300" ></p>
 ```
 
 ## Process flow
