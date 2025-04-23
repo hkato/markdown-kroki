@@ -5,7 +5,7 @@ import zlib
 process_flow_diagram_file = 'process_flow_diagram.svg'
 process_flow_diagram_code = """
 sequenceDiagram
-    participant application as Application<br/>(eg MkDocs)
+    participant application as MkDocs, Pelican<br/>or your application
     participant markdown as Python Markdown
     participant extension as KrokiDiagramExtension
     participant engine as Kroki Server

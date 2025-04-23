@@ -3,14 +3,8 @@
 Diagram extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki].
 
 This extension converts various diagram code blocks into Base64 encoded [data: URI][data-uri].
-This enables PDF generation with tools like [MkDocs to PDF][mkdocs-to-pdf]/[WeasyPrint][wasyprint] without requiring JavaScript, even during web browsing.
-
-[mermaid]: https://mermaid.js.org/
-[python-markdown]: https://python-markdown.github.io/
-[kuroki]: https://kroki.io/
-[data-uri]: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
-[mkdocs-to-pdf]: https://mkdocs-to-pdf.readthedocs.io/
-[wasyprint]: https://weasyprint.org/
+This enables PDF generation with tools like [MkDocs to PDF][mkdocs-to-pdf]/[WeasyPrint][wasyprint]
+without requiring JavaScript, even during web browsing.
 
 ## Install
 
@@ -34,7 +28,8 @@ ref. Kroki.io > [Install](https://kroki.io/#install) > [Using Docker or Podman](
 docker compose up -d
 ```
 
-> The default port used by MkDocs (`mkdocs serve`) may conflict with the default port of a Dockerized Kroki instance.
+> The default port used by MkDocs (`mkdocs serve`) may conflict with the default
+> port of a Dockerized Kroki instance.
 > Consequently, you will need to change the port configuration for one of them.
 
 ## Usage
@@ -44,13 +39,31 @@ docker compose up -d
 ```
 ````
 
-### MkDocs Integration
+- format (optional): Output image format default to svg
+- img tag attribute (optional): alt, width, height, class, id, style, title
+- diagram option (optional): refer to [Diagram options](https://docs.kroki.io/kroki/setup/diagram-options/)
+
+### [MkDocs][mkdocs] Integration
 
 ```yaml
 # mkdocs.yml
 markdown_extensions:
   - markdown_kroki:
       kroki_url: http://localhost:18000  # default: https://kroki.io
+```
+
+### [Pelican][pelican] Integration
+
+```py
+# pelicanconf.py
+MARKDOWN = {
+    'extension_configs': {
+        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.extra': {},
+        'markdown_kroki': {'kroki_url': 'http://localhost:18000'},    # Add this
+    },
+    'output_format': 'html5',
+}
 ```
 
 ### Python code
@@ -85,3 +98,11 @@ IHgxPSIyNzYiLz48L3N2Zz4=" width="300" ></p>
 ## Process flow
 
 ![Process flow](process_flow_diagram.svg)
+
+[python-markdown]: https://python-markdown.github.io/
+[kuroki]: https://kroki.io/
+[data-uri]: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
+[mkdocs-to-pdf]: https://mkdocs-to-pdf.readthedocs.io/
+[wasyprint]: https://weasyprint.org/
+[mkdocs]: https://www.mkdocs.org/
+[pelican]: https://getpelican.com/

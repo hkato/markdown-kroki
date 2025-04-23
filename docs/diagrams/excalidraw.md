@@ -1,8 +1,5 @@
 # Excalidraw
 
-!!! warning
-    PDF rendering will fail with WeasyPrint. However, it will succeed with Playwright/Chromium.
-
 ```excalidraw
 {
   "type": "excalidraw",
