@@ -1,5 +1,9 @@
 # [markdown-kroki](https://hkato.github.io/markdown-kroki/)
 
+[![PyPI version](https://img.shields.io/pypi/v/markdown-kroki)](https://pypi.org/project/markdown-kroki/)
+![License](https://img.shields.io/pypi/l/markdown-kroki)
+![Python versions](https://img.shields.io/pypi/pyversions/markdown-kroki)
+
 Diagram extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki].
 
 This extension converts various diagram code blocks into Base64 encoded [data: URI][data-uri] or direct image link.
