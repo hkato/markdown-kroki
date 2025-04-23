@@ -2,9 +2,9 @@
 
 Diagram extension for [Python-Markdown][python-markdown] using [Kroki server][kuroki].
 
-This extension converts various diagram code blocks into Base64 encoded [data: URI][data-uri].
+This extension converts various diagram code blocks into Base64 encoded [data: URI][data-uri] or direct image link.
 This enables PDF generation with tools like [MkDocs to PDF][mkdocs-to-pdf]/[WeasyPrint][wasyprint]
-without requiring JavaScript, even during web browsing.
+without requiring JavaScript(e.g. [Mermaid][mermaid])
 
 ## Install
 
@@ -50,6 +50,7 @@ docker compose up -d
 markdown_extensions:
   - markdown_kroki:
       kroki_url: http://localhost:18000  # default: https://kroki.io
+      img_src: link                      # default: data/data URI, link/direct link
 ```
 
 ### [Pelican][pelican] Integration
@@ -60,7 +61,10 @@ MARKDOWN = {
     'extension_configs': {
         'markdown.extensions.codehilite': {'css_class': 'highlight'},
         'markdown.extensions.extra': {},
-        'markdown_kroki': {'kroki_url': 'http://localhost:18000'},    # Add this
+        'markdown_kroki': {                         # Add these
+            'kroki_url': 'http://localhost:18000',
+            'img_src': 'link'
+        },
     },
     'output_format': 'html5',
 }
@@ -97,12 +101,21 @@ IHgxPSIyNzYiLz48L3N2Zz4=" width="300" ></p>
 
 ## Process flow
 
-![Process flow](process_flow_diagram.svg)
+### data URI
+
+![Process flow data](process_flow_diagram_data.svg)
+
+### Direct link (GET API)
+
+![Process flow link](process_flow_diagram_link.svg)
+
+<!-- Links -->
 
 [python-markdown]: https://python-markdown.github.io/
 [kuroki]: https://kroki.io/
 [data-uri]: https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data
 [mkdocs-to-pdf]: https://mkdocs-to-pdf.readthedocs.io/
 [wasyprint]: https://weasyprint.org/
+[mermaid]: https://mermaid.js.org/
 [mkdocs]: https://www.mkdocs.org/
 [pelican]: https://getpelican.com/
