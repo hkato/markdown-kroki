@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.3.0](https://github.com/hkato/markdown-kroki/releases/tag/v0.3.0) - 2025-04-23
+
+### Added
+
+- Direct link support (GET API)
+    - `img_src` option
+
 ## [v0.2.0](https://github.com/hkato/markdown-kroki/releases/tag/v0.2.0) - 2025-04-22
 
 ### Changed
