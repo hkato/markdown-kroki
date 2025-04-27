@@ -16,3 +16,6 @@ site/
 node_modules
 package.json
 package-lock.json
+
+# Sample code
+sample_code.html

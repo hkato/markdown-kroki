@@ -107,11 +107,40 @@ IHgxPSIyNzYiLz48L3N2Zz4=" width="300" ></p>
 
 ### data URI
 
-![Process flow data](process_flow_diagram_data.svg)
+```mermaid
+sequenceDiagram
+    participant application as MkDocs, Pelican<br/>or your application
+    participant markdown as Python Markdown
+    participant extension as KrokiDiagramExtension
+    participant engine as Kroki Server
+
+    application->>markdown: Markdown + Diagrams
+    markdown->>extension: Preprocessor
+    extension->>engine: Diagram code
+    engine-->>engine: Convert
+    engine-->>extension: Image Data
+    extension-->>extension: Base64 encode
+    extension-->>markdown: Markdown + data URI image
+    markdown-->>application: HTML + data URI image
+```
 
 ### Direct link (GET API)
 
-![Process flow link](process_flow_diagram_link.svg)
+```mermaid
+sequenceDiagram
+    participant application as MkDocs, Pelican<br/>or your application
+    participant markdown as Python Markdown
+    participant extension as KrokiDiagramExtension
+    participant engine as Kroki Server
+
+    application->>markdown: Markdown + Diagrams
+    markdown->>extension: Preprocessor
+    extension-->>extension: Encoded code<br/>base64+deflate
+    extension-->>markdown: Markdown + Kroki direct link
+    markdown-->>application: HTML + Kroki direct kink
+    application->>engine: GET API<br/><img src="http[s]">
+    engine-->>application: Image data
+```
 
 <!-- Links -->
 
