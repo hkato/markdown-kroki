@@ -14,6 +14,9 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Unit test
+        run: uv pytest
+
       - name: Build the project
         run: uv build
 
