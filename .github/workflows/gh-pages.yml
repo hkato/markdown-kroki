@@ -24,6 +24,7 @@ jobs:
       - name: Build MkDocs
         run: |
           uv pip install -e .
+          export ENABLE_PDF_EXPORT=1
           uv run mkdocs build --verbose
 
       - name: Upload static files as artifact
