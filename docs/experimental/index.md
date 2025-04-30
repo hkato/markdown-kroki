@@ -23,7 +23,7 @@ plugins:
 
 ## Samples
 
-[:link: Markdown code](https://github.com/hkato/markdown-kroki/tree/main/docs/exmerimentl)
+[:link: Markdown code](https://github.com/hkato/markdown-kroki/tree/main/docs/experimental)
 
 ### Draw.io
 
