@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.4.0](https://github.com/hkato/markdown-kroki/releases/tag/v0.4.0) - 2025-04-30
+
+### Added
+
+- feat: Implement external file support as MkDocs plugin (Experimental)
+- test: Add unit tests using pytest
+
+### Changed
+
+- refactor: Split Kroki server handling
+
 ## [v0.3.0](https://github.com/hkato/markdown-kroki/releases/tag/v0.3.0) - 2025-04-23
 
 ### Added
