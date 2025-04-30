@@ -21,15 +21,24 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - markdown_kroki:
       # kroki_url: https://kroki.io
-      # img_src: link
+      # img_src: link   # default: data
       kroki_url: http://localhost:18000
-      img_src: data
 
 plugins:
   - search
   - to-pdf:
+      enabled_if_env: ENABLE_PDF_EXPORT
       cover_title: Diagram extension for Python-Markdown
       cover_subtitle: using Kroki
       download_link: header
+  # Experimental
+  - kroki_diagrams:
+      # kroki_url: https://kroki.io
+      # format: png     # default: svg
+      # img_src: link   # default: data
+      kroki_url: http://localhost:18000

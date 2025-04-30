@@ -48,6 +48,9 @@ dev = [
     "types-requests>=2.32.0.20250328",
 ]
 
+[project.entry-points."mkdocs.plugins"]
+kroki_diagrams = "markdown_kroki.plugin:KrokiDiagramPlugin"
+
 [tool.ruff]
 line-length = 119
 [tool.ruff.format]
