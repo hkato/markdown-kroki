@@ -121,7 +121,7 @@ class KrokiDiagramProcessor(Preprocessor):
                     if option in self.IMG_TAG_ATTRIBUTES:
                         img_tag_attributes[option] = code_block_options[option]
                     else:
-                        kroki_options[key] = code_block_options[option].strip('"')
+                        kroki_options[option] = code_block_options[option].strip('"')
 
                 # Get img src from Kroki server
                 img_src = self.kroki_server.get_img_src(diagram_code, language, format, kroki_options)
